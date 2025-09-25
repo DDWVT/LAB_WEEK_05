@@ -3,6 +3,7 @@ package com.example.lab_week_05
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
 import retrofit2.Call
 import retrofit2.Callback
@@ -12,7 +13,6 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import com.example.lab_week_05.api.CatApiService
 import com.example.lab_week_05.model.ImageData
 import retrofit2.converter.moshi.MoshiConverterFactory
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,6 +31,14 @@ class MainActivity : AppCompatActivity() {
         findViewById(R.id.api_response)
     }
 
+    private val imageResultView: ImageView by lazy {
+        findViewById(R.id.image_result)
+    }
+
+    private val imageLoader: ImageLoader by lazy {
+        GlideLoader(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -45,9 +53,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call<List<ImageData>>, response: Response<List<ImageData>>) {
-                if(response.isSuccessful){
+                if (response.isSuccessful) {
                     val image = response.body()
-                    val firstImage = image?.firstOrNull()?.imageUrl ?: "No URL"
+                    val firstImage = image?.firstOrNull()?.imageUrl.orEmpty()
+                    if (firstImage.isNotBlank()) {
+                        imageLoader.loadImage(firstImage, imageResultView)
+                    } else {
+                        Log.d(MAIN_ACTIVITY, "Missing image URL")
+                    }
                     apiResponseView.text = getString(R.string.image_placeholder, firstImage)
                 }
                 else{
@@ -62,4 +75,5 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val MAIN_ACTIVITY = "MAIN_ACTIVITY"
     }
+
 }
