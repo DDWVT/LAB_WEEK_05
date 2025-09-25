@@ -11,3 +11,5 @@ interface CatApiService {
         @Query("size") format: String
     ): Call<String>
 }
+
+//Lupa initial commit, dan kayaknya ini solusi untuk Commit no.1

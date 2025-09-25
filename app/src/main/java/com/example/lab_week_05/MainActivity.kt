@@ -58,3 +58,4 @@ class MainActivity : AppCompatActivity() {
         const val MAIN_ACTIVITY = "MAIN_ACTIVITY"
     }
 }
+//Lupa initial commit, dan kayaknya ini solusi untuk Commit no.1
