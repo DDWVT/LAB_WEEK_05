@@ -59,23 +59,18 @@ class MainActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val firstImage = response.body()?.firstOrNull()
 
-                    // Pastikan ada data gambar yang diterima
                     if (firstImage != null) {
-                        // Muat gambar ke ImageView
                         if (firstImage.imageUrl.isNotBlank()) {
                             imageLoader.loadImage(firstImage.imageUrl, imageResultView)
                         } else {
                             Log.d(MAIN_ACTIVITY, "Missing image URL")
                         }
 
-                        // Logika untuk mendapatkan nama ras kucing
                         val catBreed = if (firstImage.breeds?.isNotEmpty() == true) {
                             firstImage.breeds.first().name
                         } else {
                             "Unknown"
                         }
-
-                        // Tampilkan nama ras di TextView
                         apiResponseView.text = getString(R.string.cat_breed_placeholder, catBreed)
 
                     } else {
